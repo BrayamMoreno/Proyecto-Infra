@@ -23,6 +23,8 @@ public partial class WeatherStationContext : DbContext
 
     public virtual DbSet<Municipio> Municipios { get; set; }
 
+    public virtual DbSet<Permiso> Permisos { get; set; }
+
     public virtual DbSet<Persona> Personas { get; set; }
 
     public virtual DbSet<Role> Roles { get; set; }
@@ -30,7 +32,6 @@ public partial class WeatherStationContext : DbContext
     public virtual DbSet<Sensore> Sensores { get; set; }
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
-
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -100,10 +101,21 @@ public partial class WeatherStationContext : DbContext
             entity.Property(e => e.Descripcion)
                 .HasMaxLength(100)
                 .HasColumnName("descripcion");
+        });
 
-            entity.HasOne(d => d.Departamento).WithMany(p => p.Municipios)
-                .HasForeignKey(d => d.DepartamentoId)
-                .HasConstraintName("municipios_departamento_id_fkey");
+        modelBuilder.Entity<Permiso>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("permisos_pkey");
+
+            entity.ToTable("permisos");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("id");
+            entity.Property(e => e.Crear).HasColumnName("crear");
+            entity.Property(e => e.Editar).HasColumnName("editar");
+            entity.Property(e => e.Eliminar).HasColumnName("eliminar");
+            entity.Property(e => e.Leer).HasColumnName("leer");
         });
 
         modelBuilder.Entity<Persona>(entity =>
@@ -133,9 +145,6 @@ public partial class WeatherStationContext : DbContext
                 .HasMaxLength(10)
                 .HasColumnName("telefono");
 
-            entity.HasOne(d => d.Municipio).WithMany(p => p.Personas)
-                .HasForeignKey(d => d.MunicipioId)
-                .HasConstraintName("personas_municipio_id_fkey");
         });
 
         modelBuilder.Entity<Role>(entity =>
@@ -145,6 +154,7 @@ public partial class WeatherStationContext : DbContext
             entity.ToTable("roles");
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.PermisoId).HasColumnName("permiso_id");
             entity.Property(e => e.Rol)
                 .HasMaxLength(20)
                 .HasColumnName("rol");
@@ -182,13 +192,6 @@ public partial class WeatherStationContext : DbContext
                 .HasMaxLength(18)
                 .HasColumnName("username");
 
-            entity.HasOne(d => d.Persona).WithMany(p => p.Usuarios)
-                .HasForeignKey(d => d.PersonaId)
-                .HasConstraintName("usuario_persona_id_fkey");
-
-            entity.HasOne(d => d.Rol).WithMany(p => p.Usuarios)
-                .HasForeignKey(d => d.RolId)
-                .HasConstraintName("usuario_rol_id_fkey");
         });
 
         OnModelCreatingPartial(modelBuilder);

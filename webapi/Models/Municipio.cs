@@ -12,8 +12,4 @@ public partial class Municipio
     public string? Descripcion { get; set; }
 
     public int? DepartamentoId { get; set; }
-
-    public virtual Departamento? Departamento { get; set; }
-
-    public virtual ICollection<Persona> Personas { get; set; } = new List<Persona>();
 }

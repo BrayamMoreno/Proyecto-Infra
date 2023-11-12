@@ -11,5 +11,4 @@ public partial class Departamento
 
     public string? Descripcion { get; set; }
 
-    public virtual ICollection<Municipio> Municipios { get; set; } = new List<Municipio>();
 }

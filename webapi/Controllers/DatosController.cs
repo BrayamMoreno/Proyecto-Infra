@@ -21,9 +21,8 @@ namespace Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<Lectura>> GetLecturas()
         {
-            return Ok(_db.Lecturas.Include(d => d.Sensor).ThenInclude(s => s.Dispositivo).ToList());
+            return Ok(_db.Lecturas.ToList());
         }
-
 
         [HttpPost("PostLecturas")]
         [ProducesResponseType(StatusCodes.Status200OK)]

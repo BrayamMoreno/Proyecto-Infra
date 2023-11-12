@@ -22,7 +22,7 @@ namespace webapi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<Dispositivo>> GetDispositivos()
         {
-            return Ok(_db.Dispositivos.ToList());
+                return Ok(_db.Dispositivos.ToList());
         }
 
         [HttpGet("GetDispositivo")]
@@ -59,7 +59,7 @@ namespace webapi.Controllers
             };
 
             _db.Dispositivos.Add(Dato);
-            _db.SaveChanges();
+          _db.SaveChanges();
             return Ok();
         }
 
@@ -75,6 +75,13 @@ namespace webapi.Controllers
                 return NotFound();
             }
 
+            bool tieneSensoresRelacionados = _db.Sensores.Any(s => s.DispositivoId == Id);
+
+            if (tieneSensoresRelacionados)
+            {
+                return BadRequest("No se puede eliminar el dispositivo porque tiene sensores relacionados.");
+            }
+
             _db.Dispositivos.Remove(Data);
             _db.SaveChanges();
             return NoContent();
@@ -84,7 +91,7 @@ namespace webapi.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Dispositivo> PatchDispositivo(int Id, [FromBody] DispositivoDto Dato)
-        {
+            {
             Dispositivo Data = _db.Dispositivos.FirstOrDefault(x => x.Id == Id);
 
             if(Data == null)

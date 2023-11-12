@@ -20,8 +20,4 @@ public partial class Persona
     public string? Correo { get; set; }
 
     public int? MunicipioId { get; set; }
-
-    public virtual Municipio? Municipio { get; set; }
-
-    public virtual ICollection<Usuario> Usuarios { get; set; } = new List<Usuario>();
 }

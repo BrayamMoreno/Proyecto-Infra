@@ -12,7 +12,4 @@ public partial class Sensore
     public string? Descripcion { get; set; }
 
     public int? DispositivoId { get; set; }
-
-    public virtual Dispositivo? Dispositivo { get; set; }
-
 }

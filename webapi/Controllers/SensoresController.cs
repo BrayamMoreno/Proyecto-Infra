@@ -21,7 +21,7 @@ namespace webapi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<Sensore>> GetSensores()
         {
-            return Ok(_db.Sensores.Include(b => b.Dispositivo).ToList());
+            return Ok(_db.Sensores.ToList());
         }
 
         [HttpGet("GetSensor")]
@@ -29,7 +29,7 @@ namespace webapi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<IEnumerable<Sensore>> GetSensores(int Id)
         {
-            Sensore Data = _db.Sensores.Include(b => b.Dispositivo).FirstOrDefault(b => b.Id == Id);
+            Sensore Data = _db.Sensores.FirstOrDefault(b => b.Id == Id);
 
             if (Data == null)
             {
@@ -45,7 +45,7 @@ namespace webapi.Controllers
         public IActionResult AddSenso([FromBody] SensoreDto Data)
         {
 
-            var dispositivo = _db.Sensores.Find(Data.DispositivoId);
+            var dispositivo = _db.Dispositivos.Find(Data.DispositivoId);
 
             if (dispositivo == null)
             {
@@ -70,17 +70,28 @@ namespace webapi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Sensore> DeleteSensor(int Id)
         {
-            Sensore Data = _db.Sensores.FirstOrDefault(b => b.Id == Id);
-
-            if (Data == null)
+            using (var transaction = _db.Database.BeginTransaction())
             {
-                return NotFound();
-            }
+                Sensore Data = _db.Sensores.FirstOrDefault(b => b.Id == Id);
 
-            _db.Remove(Data);
-            _db.SaveChanges();
-            return NoContent();
+                if (Data == null)
+                {
+                    return NotFound();
+                }
+
+                // Eliminar las lecturas asociadas
+                var associatedLecturas = _db.Lecturas.Where(l => l.SensorId == Id).ToList();
+                _db.Lecturas.RemoveRange(associatedLecturas);
+
+                _db.Remove(Data);
+                _db.SaveChanges();
+
+                transaction.Commit();
+
+                return NoContent();
+            }
         }
+
 
         [HttpPut("PutSensor")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

@@ -14,6 +14,4 @@ public partial class Lectura
     public TimeOnly? Hora { get; set; }
 
     public int? SensorId { get; set; }
-
-    public virtual Sensore? Sensor { get; set; }
 }
