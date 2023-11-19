@@ -12,5 +12,4 @@ public partial class Dispositivo
     public string? Latitud { get; set; }
 
     public string? Longitud { get; set; }
-
 }

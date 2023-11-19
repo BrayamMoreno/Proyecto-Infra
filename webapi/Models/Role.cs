@@ -12,4 +12,6 @@ public partial class Role
     public int? PermisoId { get; set; }
 
     public virtual Permiso? Permiso { get; set; }
+
+    public virtual ICollection<Usuario> Usuarios { get; set; } = new List<Usuario>();
 }

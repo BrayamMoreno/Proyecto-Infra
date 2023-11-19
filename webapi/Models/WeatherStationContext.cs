@@ -33,6 +33,7 @@ public partial class WeatherStationContext : DbContext
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Departamento>(entity =>
@@ -81,10 +82,14 @@ public partial class WeatherStationContext : DbContext
             entity.Property(e => e.Hora)
                 .HasDefaultValueSql("CURRENT_TIME")
                 .HasColumnName("hora");
-            entity.Property(e => e.SensorId).HasColumnName("sensor_id");
-            entity.Property(e => e.Valor)
+            entity.Property(e => e.Humedad)
                 .HasPrecision(10, 2)
-                .HasColumnName("valor");
+                .HasColumnName("humedad");
+            entity.Property(e => e.SensorId).HasColumnName("sensor_id");
+            entity.Property(e => e.Temperatura)
+                .HasPrecision(10, 2)
+                .HasColumnName("temperatura");
+
         });
 
         modelBuilder.Entity<Municipio>(entity =>
@@ -101,6 +106,7 @@ public partial class WeatherStationContext : DbContext
             entity.Property(e => e.Descripcion)
                 .HasMaxLength(100)
                 .HasColumnName("descripcion");
+
         });
 
         modelBuilder.Entity<Permiso>(entity =>
@@ -158,6 +164,10 @@ public partial class WeatherStationContext : DbContext
             entity.Property(e => e.Rol)
                 .HasMaxLength(20)
                 .HasColumnName("rol");
+
+            entity.HasOne(d => d.Permiso).WithMany(p => p.Roles)
+                .HasForeignKey(d => d.PermisoId)
+                .HasConstraintName("roles_permiso_id_fkey");
         });
 
         modelBuilder.Entity<Sensore>(entity =>
@@ -174,6 +184,7 @@ public partial class WeatherStationContext : DbContext
             entity.Property(e => e.Referencia)
                 .HasMaxLength(50)
                 .HasColumnName("referencia");
+
         });
 
         modelBuilder.Entity<Usuario>(entity =>
@@ -192,6 +203,9 @@ public partial class WeatherStationContext : DbContext
                 .HasMaxLength(18)
                 .HasColumnName("username");
 
+            entity.HasOne(d => d.Rol).WithMany(p => p.Usuarios)
+                .HasForeignKey(d => d.RolId)
+                .HasConstraintName("usuario_rol_id_fkey");
         });
 
         OnModelCreatingPartial(modelBuilder);

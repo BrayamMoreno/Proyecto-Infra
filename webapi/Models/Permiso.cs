@@ -14,4 +14,6 @@ public partial class Permiso
     public bool Eliminar { get; set; }
 
     public bool Editar { get; set; }
+
+    public virtual ICollection<Role> Roles { get; set; } = new List<Role>();
 }

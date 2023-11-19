@@ -26,6 +26,12 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddHttpsRedirection(options =>
+{
+    options.HttpsPort = 5000;
+});
+
+
 builder.Services.AddDbContext<WeatherStationContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("CadenaPost"));
@@ -58,3 +64,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+    

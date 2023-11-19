@@ -7,11 +7,13 @@ public partial class Lectura
 {
     public int Id { get; set; }
 
-    public decimal? Valor { get; set; }
-
     public DateOnly? Fecha { get; set; }
 
     public TimeOnly? Hora { get; set; }
 
     public int? SensorId { get; set; }
+
+    public decimal? Temperatura { get; set; }
+
+    public decimal? Humedad { get; set; }
 }

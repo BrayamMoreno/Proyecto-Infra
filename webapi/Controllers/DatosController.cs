@@ -39,8 +39,9 @@ namespace Api.Controllers
 
             Lectura Dato = new()
             {   
-                Valor = Data.Valor,
-                SensorId = Data.SensorId
+                SensorId = Data.SensorId,
+                Temperatura = Data.Temperatura,
+                Humedad = Data.Humedad
             };
 
             _db.Lecturas.Add(Dato);  

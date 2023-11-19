@@ -4,10 +4,10 @@ namespace Api.Models.Dto
 {
     public class LecturaDto
     {
-        [Column(TypeName = "numeric(18, 2)")]
-        public decimal? Valor { get; set; }
-
         public int? SensorId { get; set; }
 
+        public decimal? Temperatura { get; set; }
+
+        public decimal? Humedad { get; set; }
     }
 }

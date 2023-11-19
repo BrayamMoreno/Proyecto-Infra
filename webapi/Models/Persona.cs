@@ -20,4 +20,5 @@ public partial class Persona
     public string? Correo { get; set; }
 
     public int? MunicipioId { get; set; }
+
 }
