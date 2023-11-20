@@ -52,7 +52,7 @@ else
     });
 }
 
-app.UseCors("AllowSpecificOrigin");
+app.UseCors("AllowAnyOrigin");
 
 app.UseAuthorization();
 
