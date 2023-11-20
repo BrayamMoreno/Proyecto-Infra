@@ -15,16 +15,18 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
 });
 
+
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAnyOrigin", builder =>
+    options.AddPolicy("AllowSpecificOrigin", builder =>
     {
         builder
-            .AllowAnyOrigin()
+            .WithOrigins("*")
             .AllowAnyMethod()
             .AllowAnyHeader();
     });
 });
+
 
 
 builder.Services.AddDbContext<WeatherStationContext>(options =>
@@ -52,7 +54,7 @@ else
     });
 }
 
-app.UseCors("AllowAnyOrigin");
+app.UseCors("AllowSpecificOrigin");
 
 app.UseAuthorization();
 
