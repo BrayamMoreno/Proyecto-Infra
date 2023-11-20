@@ -27,8 +27,6 @@ builder.Services.AddCors(options =>
     });
 });
 
-
-
 builder.Services.AddDbContext<WeatherStationContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("CadenaPost"));
