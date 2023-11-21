@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Api.Models.Dto;
 using Microsoft.EntityFrameworkCore;
 using webapi.Models;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Api.Controllers
 {
@@ -48,6 +49,33 @@ namespace Api.Controllers
             _db.SaveChanges();
 
             return Ok(Data);
+        }
+
+        [HttpGet("lecturas-completas")]
+        public IActionResult GetLecturasCompletas()
+        {
+            var result = _db.Lecturas
+                .Join(_db.Sensores,
+                    lectura => lectura.SensorId,
+                    sensor => sensor.Id,
+                    (lectura, sensor) => new { Lectura = lectura, Sensor = sensor })
+                .Join(_db.Dispositivos,
+                    combined => combined.Sensor.DispositivoId,
+                    dispositivo => dispositivo.Id,
+                    (combined, dispositivo) => new
+                    {
+                        Humedad = combined.Lectura.Humedad,
+                        Temperatura = combined.Lectura.Temperatura,
+                        Fecha = combined.Lectura.Fecha,
+                        Hora = combined.Lectura.Hora,
+                        Referencia = combined.Sensor.Referencia,
+                        DescripcionDispositivo = dispositivo.Descripcion,
+                        Longitud = dispositivo.Longitud,
+                        Latitud = dispositivo.Latitud
+                    })
+                .ToList();
+
+            return Ok(result);
         }
     }
 }
