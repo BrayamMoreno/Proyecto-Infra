@@ -22,7 +22,10 @@ namespace Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<Lectura>> GetLecturas()
         {
-            return Ok(_db.Lecturas.ToList());
+
+            var ultimasLecturas = _db.Lecturas.OrderByDescending(l => l.Id).Take(20).ToList();
+
+            return Ok(ultimasLecturas);
         }
 
         [HttpPost("PostLecturas")]
@@ -72,8 +75,7 @@ namespace Api.Controllers
                         DescripcionDispositivo = dispositivo.Descripcion,
                         Longitud = dispositivo.Longitud,
                         Latitud = dispositivo.Latitud
-                    })
-                .ToList();
+                    }).Take(30).ToList();
 
             return Ok(result);
         }

@@ -59,7 +59,8 @@ namespace webapi.Controllers
             };
 
             _db.Dispositivos.Add(Dato);
-          _db.SaveChanges();
+          
+            _db.SaveChanges();
             return Ok();
         }
 
