@@ -67,6 +67,7 @@ namespace Api.Controllers
                     dispositivo => dispositivo.Id,
                     (combined, dispositivo) => new
                     {
+                        Id = combined.Lectura.Id,
                         Humedad = combined.Lectura.Humedad,
                         Temperatura = combined.Lectura.Temperatura,
                         Fecha = combined.Lectura.Fecha,
