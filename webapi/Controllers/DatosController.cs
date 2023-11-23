@@ -57,7 +57,7 @@ namespace Api.Controllers
         [HttpGet("lecturas-completas")]
         public IActionResult GetLecturasCompletas()
         {
-            var result = _db.Lecturas
+            var result = _db.Lecturas.OrderByDescending(l => l.Id)
                 .Join(_db.Sensores,
                     lectura => lectura.SensorId,
                     sensor => sensor.Id,
